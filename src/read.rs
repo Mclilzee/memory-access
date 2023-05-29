@@ -2,7 +2,7 @@ use std::ffi::c_void;
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
 
-pub fn read_memory_u32(handle: HANDLE, address: u32) -> u32 {
+pub fn read_u32(handle: HANDLE, address: u32) -> u32 {
     let mut buffer = [0u8; 4];
 
     unsafe {
@@ -18,7 +18,7 @@ pub fn read_memory_u32(handle: HANDLE, address: u32) -> u32 {
     u32::from_le_bytes(buffer)
 }
 
-pub fn read_memory_u16(handle: HANDLE, address: u32) -> u16 {
+pub fn read_u16(handle: HANDLE, address: u32) -> u16 {
     let mut buffer = [0u8; 2];
 
     unsafe {
@@ -34,7 +34,7 @@ pub fn read_memory_u16(handle: HANDLE, address: u32) -> u16 {
     u16::from_le_bytes(buffer)
 }
 
-pub fn read_memory_u8(handle: HANDLE, address: u32) -> u8 {
+pub fn read_u8(handle: HANDLE, address: u32) -> u8 {
     let mut buffer = [0u8; 1];
 
     unsafe {
@@ -50,7 +50,7 @@ pub fn read_memory_u8(handle: HANDLE, address: u32) -> u8 {
     buffer[0]
 }
 
-pub fn read_memory_f32(handle: HANDLE, address: u32) -> f32 {
+pub fn read_f32(handle: HANDLE, address: u32) -> f32 {
     let mut buffer = [0u8; 4];
 
     unsafe {
@@ -66,7 +66,7 @@ pub fn read_memory_f32(handle: HANDLE, address: u32) -> f32 {
     f32::from_le_bytes(buffer)
 }
 
-pub fn read_memory_utf16_string(handle: HANDLE, address: u32) -> String {
+pub fn read_utf16_string(handle: HANDLE, address: u32) -> String {
     let mut buffer = [0u16; 100];
     unsafe {
         ReadProcessMemory(
