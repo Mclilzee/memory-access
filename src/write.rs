@@ -1,7 +1,8 @@
 use std::ffi::c_void;
 use windows::core::Error;
-use windows::Win32::Foundation::{GetLastError, HANDLE};
+use windows::Win32::Foundation::{CloseHandle, GetLastError, HANDLE};
 use windows::Win32::System::Diagnostics::Debug::WriteProcessMemory;
+use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS};
 
 pub fn write_u32(handle: HANDLE, address_offset: u32, value: u32) -> Result<(), Error> {
     let buffer = value.to_le_bytes();
@@ -101,4 +102,9 @@ pub fn write_utf16_string(handle: HANDLE, address_offset: u32, value: &str) -> R
     } else {
         Err(unsafe { GetLastError() }.into())
     }
+}
+
+pub fn get_all_access_handle(pid: u32) -> HANDLE {
+    unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid) }
+        .expect("Failed to open write access handle.")
 }
