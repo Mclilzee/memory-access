@@ -57,3 +57,5 @@ fn write_u32_value(pid: u32, address_offset: u32) -> u32 {
     handle::close_handle(handle);
 }
 ```
+
+Version: 0.5 update Revert back changes to return a result, as an error will only occur on the read memory and write memory but will not effect the returning result, in worst case the resturning result will always be a 0 as we init a 0 values bytes array then we modify it inside the windows api functions, if nothing changes the arrays will remain the same there for returning a 0.
