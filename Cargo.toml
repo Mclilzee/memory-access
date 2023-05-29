@@ -12,7 +12,7 @@ description = """
 Windows Memory accessing using Windows Crate API, which published by Microsoft.
 Read and Write to memory using already configured functions that require minimum parameters to get started.
 
-this crate was created to make reading nad writing to memory easy.
+this crate was created to make reading and writing to memory easy.
 """
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
