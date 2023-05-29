@@ -1,8 +1,10 @@
 [package]
-name = "memory_access"
+name = "windows_memory_access"
 version = "0.3.2"
 edition = "2021"
-
+authors = "Emad Ali"
+description = "Windows Memory accessing using WinAPI. Read and Write to memory using already configured functions that require minimum parameters to get started. this crate was created to make reading nad writing to memory easy."
+repository = "https://github.com/Mclilzee/windows-memory-access"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
