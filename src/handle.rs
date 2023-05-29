@@ -1,13 +1,12 @@
 use windows::Win32::Foundation::{CloseHandle, HANDLE};
-use windows::Win32::System::Threading::OpenProcess;
-use windows::Win32::System::Threading::{PROCESS_VM_READ, PROCESS_VM_WRITE};
+use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
-pub fn get_read_handle(pid: u32) -> HANDLE {
+pub fn get_read_only_handle(pid: u32) -> HANDLE {
     unsafe { OpenProcess(PROCESS_VM_READ, true, pid) }.expect("Failed to open read access handle.")
 }
 
-pub fn get_write_handle(pid: u32) -> HANDLE {
-    unsafe { OpenProcess(PROCESS_VM_WRITE, true, pid) }
+pub fn get_all_access_handle(pid: u32) -> HANDLE {
+    unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid) }
         .expect("Failed to open write access handle.")
 }
 
