@@ -47,15 +47,13 @@ use windows::Win32::Foundation::HANDLE;
 
 
 
-fn read_u32_value(pid: u32, address_offset: u32) -> u32 {
+fn write_u32_value(pid: u32, address_offset: u32) -> u32 {
     let handle: HANDLE = handle::get_all_access_handle(pid);
 
-    let base = read_u32(handle, address_offset) + 28;
-    let base_offset = read_u32(handle, base) + 48;
-    let desired_value = read_u32(handle, base_offset);
+    let desired_value: u32 = 202;
+
+    write_u32(handle, address_offset, desired_value);
 
     handle::close_handle(handle);
-
-    desired_value
 }
 ```
