@@ -36,7 +36,7 @@ pub fn write_u16(handle: HANDLE, address_offset: u32, value: u16) {
 pub fn write_u8(handle: HANDLE, address_offset: u32, value: u8) {
     let buffer = value.to_le_bytes();
 
-    let result = unsafe {
+    unsafe {
         WriteProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -50,7 +50,7 @@ pub fn write_u8(handle: HANDLE, address_offset: u32, value: u8) {
 pub fn write_f32(handle: HANDLE, address_offset: u32, value: f32) {
     let buffer = value.to_le_bytes();
 
-    let result = unsafe {
+    unsafe {
         WriteProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -64,7 +64,7 @@ pub fn write_f32(handle: HANDLE, address_offset: u32, value: f32) {
 pub fn write_utf16_string(handle: HANDLE, address_offset: u32, value: &str) {
     let buffer = value.encode_utf16().collect::<Vec<u16>>();
 
-    let result = unsafe {
+    unsafe {
         WriteProcessMemory(
             handle,
             address_offset as *const c_void,
