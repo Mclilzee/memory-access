@@ -17,4 +17,4 @@ this crate was created to make reading nad writing to memory easy.
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-windows = {version = "0.44.0", features = ["Win32_System_Diagnostics_Debug", "Win32_System_Threading", "Win32_Foundation"]}
+windows = {version = "0.44.0", features = ["Win32_System_Diagnostics_Debug", "Win32_System_Threading", "Win32_Foundation",]}
