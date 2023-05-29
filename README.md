@@ -1,12 +1,11 @@
 # Windows Memory Access Crate
 Requires: <a href="https://crates.io/crates/windows">Windows API Crate Dependencies</a> for Opening and Closing handles
 
-required dependencies :
-
+Adding required dependencies:
+```toml
 [dependencies]
-
 windows = {version = "x.x.x", features = ["Win32_System_Threading", "Win32_Foundation"]}
-
+```
 Working with Windows Official API Crate can be little overwhelming for some people, this Lib is created to make it easier for reading and writing to memory.
 
 You can simply pass in the process PID  and be able to read from memory using u32 offsets. There is variety of functions to choose from, you want to read a u32, u16 or even a utf16 string, it is included, same goes for writing to memory locations.
