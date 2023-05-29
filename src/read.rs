@@ -18,7 +18,7 @@ pub fn read_u32(handle: HANDLE, address_offset: u32) -> u32 {
         );
     }
 
-    u32::from_le_bytes(buffer)
+    Ok(u32::from_le_bytes(buffer))
 }
 
 pub fn read_u16(handle: HANDLE, address_offset: u32) -> u16 {
@@ -34,7 +34,7 @@ pub fn read_u16(handle: HANDLE, address_offset: u32) -> u16 {
         );
     }
 
-    u16::from_le_bytes(buffer)
+    Ok(u16::from_le_bytes(buffer))
 }
 
 pub fn read_u8(handle: HANDLE, address_offset: u32) -> u8 {
@@ -50,7 +50,7 @@ pub fn read_u8(handle: HANDLE, address_offset: u32) -> u8 {
         );
     }
 
-    buffer[0]
+    Ok(buffer[0])
 }
 
 pub fn read_f32(handle: HANDLE, address_offset: u32) -> f32 {
@@ -66,7 +66,7 @@ pub fn read_f32(handle: HANDLE, address_offset: u32) -> f32 {
         );
     }
 
-    f32::from_le_bytes(buffer)
+    return Ok(f32::from_le_bytes(buffer));
 }
 
 pub fn read_utf16_string(handle: HANDLE, address_offset: u32) -> String {
@@ -87,5 +87,5 @@ pub fn read_utf16_string(handle: HANDLE, address_offset: u32) -> String {
         .cloned()
         .collect::<Vec<u16>>();
 
-    String::from_utf16_lossy(&utf16_array[..])
+    Ok(String::from_utf16_lossy(&utf16_array[..]))
 }
