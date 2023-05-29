@@ -2,7 +2,9 @@
 Requires: <a href="https://crates.io/crates/windows">Windows API Crate Dependencies</a> for Opening and Closing handles
 
 required dependencies :
+
 [dependencies]
+
 windows = {version = "x.x.x", features = ["Win32_System_Threading", "Win32_Foundation"]}
 
 Working with Windows Official API Crate can be little overwhelming for some people, this Lib is created to make it easier for reading and writing to memory.
@@ -14,6 +16,9 @@ If your plant is to read and write a lot to the same process, I recommend using 
 Disclaimer: This lib make use of unsafe memory manipulation functions, be sure to know what you are doing as manually manipulating memory can give unpredictable results. Reading and Writing to memory also require adminstrator role before you are able to read or write to memory.
 
 ## Examples
+
+### Reading
+requires a handle with read acess, can be found in `windows_memory_access::handle::get_read_only_handle(pid);`
 ```rs
 use memory_access::read::read_u32;
 use memory_access::handle;
@@ -22,7 +27,29 @@ use windows::Win32::Foundation::HANDLE;
 
 
 fn read_u32_value(pid: u32, address_offset: u32) -> u32 {
-    let handle: HANDLE = handle::get_handle(pid);
+    let handle: HANDLE = handle::get_read_only_handle(pid);
+
+    let base = read_u32(handle, address_offset) + 28;
+    let base_offset = read_u32(handle, base) + 48;
+    let desired_value = read_u32(handle, base_offset);
+
+    handle::close_handle(handle);
+
+    desired_value
+}
+```
+
+### Writing
+requires a handle with write access or all access, can be found in `windows_memory_access::handle:get_all_access_handle(pid);`
+```rs
+use memory_access::read::read_u32;
+use memory_access::handle;
+use windows::Win32::Foundation::HANDLE;
+
+
+
+fn read_u32_value(pid: u32, address_offset: u32) -> u32 {
+    let handle: HANDLE = handle::get_all_access_handle(pid);
 
     let base = read_u32(handle, address_offset) + 28;
     let base_offset = read_u32(handle, base) + 48;
