@@ -4,6 +4,8 @@ use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
 
 // Reading an offset provide an empty buffer with amount of bytes to read into then convert to
 // proper type and return.
+// requires a proper handle with reading rights, can use the windows_memory_access::handle::get_read_only_handle(pid); to
+// simplify getting handles and windows_memory_access::handle::close_handle(handle); to close.
 
 pub fn read_u32(handle: HANDLE, address_offset: u32) -> u32 {
     let mut buffer = [0u8; 4];
