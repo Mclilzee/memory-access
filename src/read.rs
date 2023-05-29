@@ -1,8 +1,6 @@
 use std::ffi::c_void;
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
-use windows::Win32::System::Threading::OpenProcess;
-use windows::Win32::System::Threading::PROCESS_VM_READ;
 
 pub fn read_memory_u32(handle: HANDLE, address: u32) -> u32 {
     let mut buffer = [0u8; 4];
@@ -87,8 +85,4 @@ pub fn read_memory_utf16_string(handle: HANDLE, address: u32) -> String {
         .collect::<Vec<u16>>();
 
     String::from_utf16_lossy(&utf16_array[..])
-}
-
-pub fn get_handle(pid: u32) -> HANDLE {
-    unsafe { OpenProcess(PROCESS_VM_READ, true, pid) }.expect("Error opening handle")
 }
