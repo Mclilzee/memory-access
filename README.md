@@ -15,9 +15,9 @@ Disclaimer: This lib make use of unsafe memory manipulation functions, be sure t
 
 ## Examples
 ```rs
-use super::memory_access::{read_u32, handle};
-use super::coordinates::Coordinates;
-use windows::Win32::Foundation::{CloseHandle, HANDLE};
+use memory_access::read::read_u32;
+use memory_access::handle;
+use windows::Win32::Foundation::HANDLE;
 
 
 

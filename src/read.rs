@@ -1,8 +1,6 @@
 use std::ffi::c_void;
-use windows::core::Error;
-use windows::Win32::Foundation::{CloseHandle, GetLastError, HANDLE};
+use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
-use windows::Win32::System::Threading::{OpenProcess, PROCESS_VM_READ};
 
 // Reading an offset provide an empty buffer with amount of bytes to read into then convert to
 // proper type and return.
