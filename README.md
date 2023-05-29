@@ -4,7 +4,7 @@ Requires: <a href="https://crates.io/crates/windows">Windows API Crate Dependenc
 Adding required dependencies:
 ```toml
 [dependencies]
-windows = {version = "x.x.x", features = ["Win32_System_Threading", "Win32_Foundation"]}
+windows = {version = "0.44.0", features = ["Win32_System_Threading", "Win32_Foundation"]}
 ```
 Working with Windows Official API Crate can be little overwhelming for some people, this Lib is created to make it easier for reading and writing to memory.
 
