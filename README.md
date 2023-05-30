@@ -4,7 +4,7 @@ Requires: <a href="https://crates.io/crates/windows">Windows API Crate Dependenc
 Adding required dependencies:
 ```toml
 [dependencies]
-windows = {version = "0.44.0", features = ["Win32_System_Threading", "Win32_Foundation"]}
+windows = {version = "0.44.0", features = ["Win32_Foundation"]}
 ```
 Working with Windows Official API Crate can be little overwhelming for some people, this Lib is created to make it easier for reading and writing to memory.
 
@@ -23,8 +23,6 @@ use memory_access::read::read_u32;
 use memory_access::handle;
 use windows::Win32::Foundation::HANDLE;
 
-
-
 fn read_u32_value(pid: u32, address_offset: u32) -> u32 {
     let handle: HANDLE = handle::get_read_only_handle(pid);
 
@@ -39,13 +37,11 @@ fn read_u32_value(pid: u32, address_offset: u32) -> u32 {
 ```
 
 ### Writing
-requires a handle with write access or all access, can be found in `windows_memory_access::handle:get_all_access_handle(pid);`
+requires a handle with write access or all access, can be found in `windows_memory_access::handle::get_all_access_handle(pid);`
 ```rs
 use memory_access::read::read_u32;
 use memory_access::handle;
 use windows::Win32::Foundation::HANDLE;
-
-
 
 fn write_u32_value(pid: u32, address_offset: u32) -> u32 {
     let handle: HANDLE = handle::get_all_access_handle(pid);
