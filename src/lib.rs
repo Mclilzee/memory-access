@@ -5,6 +5,7 @@ use windows::core::Error;
 use windows::Win32::Foundation::{CloseHandle, HANDLE};
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct Handle {
     pub pid: u32,
     pub handle: HANDLE,
