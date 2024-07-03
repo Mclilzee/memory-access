@@ -30,31 +30,7 @@ pub fn utf16_string(handle: HANDLE, address_offset: u32) -> Result<String, Error
     }
 }
 
-pub fn read_u32(handle: HANDLE, address_offset: u32) -> Result<u32, Error> {
-    u32_bytes(handle, address_offset).map(u32::from_le_bytes)
-}
-
-pub fn read_i32(handle: HANDLE, address_offset: u32) -> Result<i32, Error> {
-    u32_bytes(handle, address_offset).map(i32::from_le_bytes)
-}
-
-pub fn read_u16(handle: HANDLE, address_offset: u32) -> Result<u16, Error> {
-    u16_bytes(handle, address_offset).map(u16::from_le_bytes)
-}
-
-pub fn read_i16(handle: HANDLE, address_offset: u32) -> Result<i16, Error> {
-    u16_bytes(handle, address_offset).map(i16::from_le_bytes)
-}
-
-pub fn read_u8(handle: HANDLE, address_offset: u32) -> Result<u8, Error> {
-    u8_bytes(handle, address_offset).map(|b| b[0])
-}
-
-pub fn read_i8(handle: HANDLE, address_offset: u32) -> Result<i8, Error> {
-    u8_bytes(handle, address_offset).map(i8::from_le_bytes)
-}
-
-fn u32_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 4], Error> {
+pub fn u32_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 4], Error> {
     let mut buffer = [0u8; 4];
 
     unsafe {
@@ -70,7 +46,7 @@ fn u32_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 4], Error> {
     Ok(buffer)
 }
 
-fn u16_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 2], Error> {
+pub fn u16_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 2], Error> {
     let mut buffer = [0u8; 2];
 
     unsafe {
@@ -86,7 +62,7 @@ fn u16_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 2], Error> {
     Ok(buffer)
 }
 
-fn u8_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 1], Error> {
+pub fn u8_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 1], Error> {
     let mut buffer = [0u8; 1];
 
     unsafe {
