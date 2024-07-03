@@ -10,7 +10,7 @@ use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
 pub fn read_u32(handle: HANDLE, address_offset: u32) -> u32 {
     let mut buffer = [0u8; 4];
 
-    unsafe {
+    let result = unsafe {
         ReadProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -20,13 +20,16 @@ pub fn read_u32(handle: HANDLE, address_offset: u32) -> u32 {
         )
     };
 
-    u32::from_le_bytes(buffer)
+    match result {
+        Ok(_) => u32::from_le_bytes(buffer),
+        Err(_) => 0,
+    }
 }
 
 pub fn read_u16(handle: HANDLE, address_offset: u32) -> u16 {
     let mut buffer = [0u8; 2];
 
-    unsafe {
+    let result = unsafe {
         ReadProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -36,13 +39,16 @@ pub fn read_u16(handle: HANDLE, address_offset: u32) -> u16 {
         )
     };
 
-    u16::from_le_bytes(buffer)
+    match result {
+        Ok(_) => u16::from_le_bytes(buffer),
+        Err(_) => 0,
+    }
 }
 
 pub fn read_u8(handle: HANDLE, address_offset: u32) -> u8 {
     let mut buffer = [0u8; 1];
 
-    unsafe {
+    let result = unsafe {
         ReadProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -52,13 +58,16 @@ pub fn read_u8(handle: HANDLE, address_offset: u32) -> u8 {
         )
     };
 
-    u8::from_le_bytes(buffer)
+    match result {
+        Ok(_) => u8::from_le_bytes(buffer),
+        Err(_) => 0,
+    }
 }
 
 pub fn read_f32(handle: HANDLE, address_offset: u32) -> f32 {
     let mut buffer = [0u8; 4];
 
-    unsafe {
+    let result = unsafe {
         ReadProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -68,13 +77,16 @@ pub fn read_f32(handle: HANDLE, address_offset: u32) -> f32 {
         )
     };
 
-    f32::from_le_bytes(buffer)
+    match result {
+        Ok(_) => f32::from_le_bytes(buffer),
+        Err(_) => 0.0,
+    }
 }
 
 pub fn read_utf16_string(handle: HANDLE, address_offset: u32) -> String {
     let mut buffer = [0u16; 100];
 
-    unsafe {
+    let result = unsafe {
         ReadProcessMemory(
             handle,
             address_offset as *const c_void,
@@ -84,11 +96,15 @@ pub fn read_utf16_string(handle: HANDLE, address_offset: u32) -> String {
         )
     };
 
-    let utf16_array = buffer
-        .iter()
-        .take_while(|&&c| c != 0)
-        .cloned()
-        .collect::<Vec<u16>>();
+    match result {
+        Ok(_) => {
+            let utf16_array = buffer
+                .into_iter()
+                .take_while(|&c| c != 0)
+                .collect::<Vec<u16>>();
 
-    String::from_utf16_lossy(&utf16_array[..])
+            String::from_utf16_lossy(&utf16_array)
+        }
+        Err(_) => String::new(),
+    }
 }
