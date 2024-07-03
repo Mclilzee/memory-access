@@ -10,7 +10,7 @@ Disclaimer: This lib make use of unsafe memory manipulation functions, and I'm n
 ### Reading
 requires a handle with read writes can be constructed using one of the Handle constructors `Handle::read_only` `Handle::full_access`.
 ```rs
-use windows_memory_access::handle::Handle;
+use windows_memory_access::Handle;
 
 fn main() {
     let pid: u32 = 50;
@@ -31,7 +31,7 @@ fn main() {
 ### Writing
 requires a handle with write access or all access, can be constructed with Handle constructors `Handle::full_access`
 ```rs
-use windows_memory_access::handle::Handle;
+use windows_memory_access::Handle;
 
 fn main() {
     let pid: u32 = 2020;
