@@ -8,13 +8,13 @@ use windows::Win32::System::Diagnostics::Debug::ReadProcessMemory;
 // requires a proper handle with reading rights, can use the windows_memory_access::handle::get_read_only_handle(pid); to
 // simplify getting handles and windows_memory_access::handle::close_handle(handle); to close.
 
-pub fn utf16_string(handle: HANDLE, address_offset: u32) -> Result<String, Error> {
+pub fn utf16_string(handle: HANDLE, offset: u32) -> Result<String, Error> {
     let mut buffer = [0u16; 100];
 
     unsafe {
         ReadProcessMemory(
             handle,
-            address_offset as *const c_void,
+            offset as *const c_void,
             buffer.as_mut_ptr() as *mut c_void,
             buffer.len(),
             None,
@@ -30,13 +30,13 @@ pub fn utf16_string(handle: HANDLE, address_offset: u32) -> Result<String, Error
     }
 }
 
-pub fn u32_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 4], Error> {
+pub fn u32_bytes(handle: HANDLE, offset: u32) -> Result<[u8; 4], Error> {
     let mut buffer = [0u8; 4];
 
     unsafe {
         ReadProcessMemory(
             handle,
-            address_offset as *const c_void,
+            offset as *const c_void,
             buffer.as_mut_ptr() as *mut c_void,
             buffer.len(),
             None,
@@ -46,13 +46,13 @@ pub fn u32_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 4], Error> 
     Ok(buffer)
 }
 
-pub fn u16_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 2], Error> {
+pub fn u16_bytes(handle: HANDLE, offset: u32) -> Result<[u8; 2], Error> {
     let mut buffer = [0u8; 2];
 
     unsafe {
         ReadProcessMemory(
             handle,
-            address_offset as *const c_void,
+            offset as *const c_void,
             buffer.as_mut_ptr() as *mut c_void,
             buffer.len(),
             None,
@@ -62,13 +62,13 @@ pub fn u16_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 2], Error> 
     Ok(buffer)
 }
 
-pub fn u8_bytes(handle: HANDLE, address_offset: u32) -> Result<[u8; 1], Error> {
+pub fn u8_bytes(handle: HANDLE, offset: u32) -> Result<[u8; 1], Error> {
     let mut buffer = [0u8; 1];
 
     unsafe {
         ReadProcessMemory(
             handle,
-            address_offset as *const c_void,
+            offset as *const c_void,
             buffer.as_mut_ptr() as *mut c_void,
             buffer.len(),
             None,

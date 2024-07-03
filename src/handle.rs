@@ -48,6 +48,10 @@ impl Handle {
         read::u8_bytes(self.handle, offset).map(i8::from_le_bytes)
     }
 
+    pub fn read_u16_string(&self, offset: u32) -> Result<String, Error> {
+        read::utf16_string(self.handle, offset)
+    }
+
     pub fn write_u32(&self, offset: u32, value: u32) -> Result<(), Error> {
         let bytes = value.to_le_bytes();
         write_u8_bytes(self.handle, offset, &bytes)
