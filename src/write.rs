@@ -16,6 +16,7 @@ pub fn write_u32(handle: HANDLE, address_offset: u32, value: u32) {
             buffer.len(),
             None,
         )
+        .ok()
     };
 }
 
@@ -30,6 +31,7 @@ pub fn write_u16(handle: HANDLE, address_offset: u32, value: u16) {
             buffer.len(),
             None,
         )
+        .ok()
     };
 }
 
@@ -44,6 +46,7 @@ pub fn write_u8(handle: HANDLE, address_offset: u32, value: u8) {
             buffer.len(),
             None,
         )
+        .ok()
     };
 }
 
@@ -58,6 +61,7 @@ pub fn write_f32(handle: HANDLE, address_offset: u32, value: f32) {
             buffer.len(),
             None,
         )
+        .ok()
     };
 }
 
@@ -72,5 +76,6 @@ pub fn write_utf16_string(handle: HANDLE, address_offset: u32, value: &str) {
             buffer.len(),
             None,
         )
+        .ok()
     };
 }
