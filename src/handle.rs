@@ -6,36 +6,18 @@ use windows::core::Error;
 use windows::Win32::Foundation::{CloseHandle, HANDLE};
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
-enum HandleType {
-    ReadOnly,
-    FullAccess,
-}
-
 pub struct Handle {
     pub pid: u32,
     pub handle: HANDLE,
-    h_type: HandleType,
 }
 
 impl Handle {
     pub fn read_only(pid: u32) -> Result<Handle, Error> {
-        unsafe {
-            OpenProcess(PROCESS_VM_READ, true, pid).map(|handle| Self {
-                handle,
-                pid,
-                h_type: HandleType::ReadOnly,
-            })
-        }
+        unsafe { OpenProcess(PROCESS_VM_READ, true, pid).map(|handle| Self { handle, pid }) }
     }
 
     pub fn full_access(pid: u32) -> Result<Handle, Error> {
-        unsafe {
-            OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self {
-                handle,
-                pid,
-                h_type: HandleType::FullAccess,
-            })
-        }
+        unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle, pid }) }
     }
 
     pub fn close(self) -> Result<(), Error> {
