@@ -8,3 +8,5 @@ pub fn virtual_alloc_ex(handle: HANDLE, size: usize) -> u32 {
     let protection: PAGE_PROTECTION_FLAGS = PAGE_PROTECTION_FLAGS(64);
     unsafe { VirtualAllocEx(handle, None, size, v_type, protection) as u32 }
 }
+
+pub fn virtual_free_ex(handle: HANDLE, address: u32) {}

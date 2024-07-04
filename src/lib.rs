@@ -1,5 +1,6 @@
 mod allocation;
 mod read;
+mod threading;
 mod write;
 
 use windows::core::Error;
@@ -8,17 +9,16 @@ use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Handle {
-    pub pid: u32,
     pub handle: HANDLE,
 }
 
 impl Handle {
     pub fn read_only(pid: u32) -> Result<Handle, Error> {
-        unsafe { OpenProcess(PROCESS_VM_READ, true, pid).map(|handle| Self { handle, pid }) }
+        unsafe { OpenProcess(PROCESS_VM_READ, true, pid).map(|handle| Self { handle }) }
     }
 
     pub fn full_access(pid: u32) -> Result<Handle, Error> {
-        unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle, pid }) }
+        unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle }) }
     }
 
     pub fn close(self) -> Result<(), Error> {
@@ -68,6 +68,10 @@ impl Handle {
         write::write_u8_bytes(self.handle, offset, &bytes)
     }
 
+    pub fn write_bytes(&self, offset: u32, bytes: &[u8]) -> Result<(), Error> {
+        write::write_u8_bytes(self.handle, offset, bytes)
+    }
+
     pub fn write_f32(&self, offset: u32, value: f32) -> Result<(), Error> {
         let bytes = value.to_le_bytes();
         write::write_u8_bytes(self.handle, offset, &bytes)
@@ -81,4 +85,16 @@ impl Handle {
     pub fn alloc(&self, size: usize) -> u32 {
         allocation::virtual_alloc_ex(self.handle, size)
     }
+
+    pub fn create_remote_thread(&self, address: u32) -> Result<ThreadHandle, Error> {
+        threading::create_remote_thread(self.handle, address).map(|handle| ThreadHandle { handle })
+    }
+}
+
+pub struct ThreadHandle {
+    handle: HANDLE,
+}
+
+impl ThreadHandle {
+    pub fn free(self) {}
 }
