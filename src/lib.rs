@@ -3,8 +3,8 @@ mod read;
 mod threading;
 mod write;
 
-use windows::core::Error;
-use windows::Win32::Foundation::{CloseHandle, HANDLE};
+use windows::core::{Error, Free};
+use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
 #[derive(Debug, PartialEq, Eq)]
@@ -104,9 +104,7 @@ impl Drop for VirtualAllocEx {
 
 impl Drop for Handle {
     fn drop(&mut self) {
-        unsafe {
-            CloseHandle(self.handle).ok();
-        }
+        unsafe { self.handle.free() };
     }
 }
 
@@ -114,10 +112,19 @@ pub struct ThreadHandle {
     handle: HANDLE,
 }
 
+impl ThreadHandle {
+    pub fn wait(&self) -> Result<(), Error> {
+        let result = threading::wait_for_single_object(self.handle);
+        if result == 0 {
+            Ok(())
+        } else {
+            Err(Error::empty())
+        }
+    }
+}
+
 impl Drop for ThreadHandle {
     fn drop(&mut self) {
-        unsafe {
-            CloseHandle(self.handle).ok();
-        }
+        unsafe { self.handle.free() };
     }
 }
