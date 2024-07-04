@@ -21,10 +21,6 @@ impl Handle {
         unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle }) }
     }
 
-    pub fn close(self) -> Result<(), Error> {
-        unsafe { CloseHandle(self.handle) }
-    }
-
     pub fn read_u32(&self, offset: u32) -> Result<u32, Error> {
         read::u32_bytes(self.handle, offset).map(u32::from_le_bytes)
     }
@@ -82,8 +78,12 @@ impl Handle {
         write::write_u16_bytes(self.handle, offset, &bytes)
     }
 
-    pub fn alloc(&self, size: usize) -> u32 {
-        allocation::virtual_alloc_ex(self.handle, size)
+    pub fn virtual_alloc_ex(&self, size: usize) -> Result<VirtualAllocEx, Error> {
+        let address = allocation::virtual_alloc_ex(self.handle, size)?;
+        Ok(VirtualAllocEx {
+            address,
+            handle: self.handle,
+        })
     }
 
     pub fn create_remote_thread(&self, address: u32) -> Result<ThreadHandle, Error> {
@@ -91,10 +91,33 @@ impl Handle {
     }
 }
 
+pub struct VirtualAllocEx {
+    pub address: u32,
+    handle: HANDLE,
+}
+
+impl Drop for VirtualAllocEx {
+    fn drop(&mut self) {
+        allocation::virtual_free_ex(self.handle, self.address).ok();
+    }
+}
+
+impl Drop for Handle {
+    fn drop(&mut self) {
+        unsafe {
+            CloseHandle(self.handle).ok();
+        }
+    }
+}
+
 pub struct ThreadHandle {
     handle: HANDLE,
 }
 
-impl ThreadHandle {
-    pub fn free(self) {}
+impl Drop for ThreadHandle {
+    fn drop(&mut self) {
+        unsafe {
+            CloseHandle(self.handle).ok();
+        }
+    }
 }
