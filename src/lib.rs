@@ -1,3 +1,4 @@
+mod allocation;
 mod read;
 mod write;
 
@@ -75,5 +76,9 @@ impl Handle {
     pub fn write_utf16_string(&self, offset: u32, value: &str) -> Result<(), Error> {
         let bytes = value.encode_utf16().collect::<Vec<u16>>();
         write::write_u16_bytes(self.handle, offset, &bytes)
+    }
+
+    pub fn alloc(&self, size: usize) -> u32 {
+        allocation::virtual_alloc_ex(self.handle, size)
     }
 }
