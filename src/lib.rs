@@ -21,10 +21,6 @@ impl Handle {
         unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle }) }
     }
 
-    pub fn free(&mut self) {
-        unsafe { self.handle.free() };
-    }
-
     pub fn read_u32(&self, offset: u32) -> Result<u32, Error> {
         read::u32_bytes(self.handle, offset).map(u32::from_le_bytes)
     }
