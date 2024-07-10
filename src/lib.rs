@@ -3,6 +3,11 @@ mod read;
 mod threading;
 mod write;
 
+pub mod error {
+    pub use windows
+    ::core::Error;
+}
+
 use windows::core::{Error, Free};
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
