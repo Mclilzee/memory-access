@@ -7,7 +7,7 @@ use windows::core::{Error, Free};
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct Handle {
     pub handle: HANDLE,
 }
@@ -19,6 +19,10 @@ impl Handle {
 
     pub fn full_access(pid: u32) -> Result<Handle, Error> {
         unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle }) }
+    }
+
+    pub fn free(&mut self) {
+        unsafe { self.handle.free() };
     }
 
     pub fn read_u32(&self, offset: u32) -> Result<u32, Error> {
@@ -99,12 +103,6 @@ pub struct VirtualAllocEx {
 impl Drop for VirtualAllocEx {
     fn drop(&mut self) {
         allocation::virtual_free_ex(self.handle, self.address).ok();
-    }
-}
-
-impl Drop for Handle {
-    fn drop(&mut self) {
-        unsafe { self.handle.free() };
     }
 }
 
