@@ -7,7 +7,7 @@ use windows::core::{Error, Free};
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::System::Threading::{OpenProcess, PROCESS_ALL_ACCESS, PROCESS_VM_READ};
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Handle {
     pub handle: HANDLE,
 }
