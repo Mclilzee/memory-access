@@ -30,6 +30,22 @@ pub fn utf16_string(handle: HANDLE, offset: u32) -> Result<String, Error> {
     }
 }
 
+pub fn u64_bytes(handle: HANDLE, offset: u32) -> Result<[u8; 8], Error> {
+    let mut buffer = [0u8; 8];
+
+    unsafe {
+        ReadProcessMemory(
+            handle,
+            offset as *const c_void,
+            buffer.as_mut_ptr() as *mut c_void,
+            buffer.len(),
+            None,
+        )?
+    };
+
+    Ok(buffer)
+}
+
 pub fn u32_bytes(handle: HANDLE, offset: u32) -> Result<[u8; 4], Error> {
     let mut buffer = [0u8; 4];
 

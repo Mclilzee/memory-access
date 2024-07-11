@@ -4,8 +4,7 @@ mod threading;
 mod write;
 
 pub mod error {
-    pub use windows
-    ::core::Error;
+    pub use windows::core::Error;
 }
 
 use windows::core::{Error, Free};
@@ -24,6 +23,10 @@ impl Handle {
 
     pub fn full_access(pid: u32) -> Result<Handle, Error> {
         unsafe { OpenProcess(PROCESS_ALL_ACCESS, true, pid).map(|handle| Self { handle }) }
+    }
+
+    pub fn read_u64(&self, offset: u32) -> Result<u64, Error> {
+        read::u64_bytes(self.handle, offset).map(u64::from_le_bytes)
     }
 
     pub fn read_u32(&self, offset: u32) -> Result<u32, Error> {
